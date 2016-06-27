@@ -50,7 +50,7 @@
         <module>hive-plugin</module>
         <module>im-crawler</module>
         <module>flume-hdfs-sink</module>
-        <module>spark-core</module>
+        <!--<module>spark-core</module>-->
         <module>genconf-dump</module>
         <module>dot-gen</module>
         <module>cluster-migration</module>
