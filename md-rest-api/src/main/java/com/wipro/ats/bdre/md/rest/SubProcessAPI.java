@@ -22,7 +22,6 @@ import com.wipro.ats.bdre.md.dao.ProcessTypeDAO;
 import com.wipro.ats.bdre.md.dao.PropertiesDAO;
 import com.wipro.ats.bdre.md.dao.jpa.BusDomain;
 import com.wipro.ats.bdre.md.dao.jpa.ProcessTemplate;
-import com.wipro.ats.bdre.md.dao.jpa.PropertiesId;
 import com.wipro.ats.bdre.md.dao.jpa.WorkflowType;
 import com.wipro.ats.bdre.md.rest.util.BindingResultError;
 import com.wipro.ats.bdre.md.rest.util.DateConverter;
@@ -30,7 +29,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -130,7 +128,9 @@ public class SubProcessAPI extends MetadataAPIBase {
     public RestWrapper delete(
             @PathVariable("id") Integer processId, Principal principal) {
         RestWrapper restWrapper = null;
-       try {
+
+        try {
+
             com.wipro.ats.bdre.md.dao.jpa.Process process=processDAO.get(processId);
             processDAO.securityCheck(process.getProcess().getProcessId(),principal.getName(),WRITE);
             processDAO.delete(processId);
@@ -289,19 +289,6 @@ public class SubProcessAPI extends MetadataAPIBase {
             process.setProcessId(processId);
             process.setTableAddTS(DateConverter.dateToString(insertDaoProcess.getAddTs()));
             process.setTableEditTS(DateConverter.dateToString(insertDaoProcess.getEditTs()));
-
-            if(process.getProcessTypeId()==40) {
-                com.wipro.ats.bdre.md.dao.jpa.Properties insertProperties = new com.wipro.ats.bdre.md.dao.jpa.Properties();
-                insertProperties.setProcess(processDAO.get(processId));
-                PropertiesId propertiesId = new PropertiesId();
-                propertiesId.setPropKey("sub-workflow");
-                propertiesId.setProcessId(processDAO.get(processId).getProcessId());
-                insertProperties.setId(propertiesId);
-                insertProperties.setConfigGroup("Sub Workflow");
-                insertProperties.setPropValue("1");
-                insertProperties.setDescription("Sub Workflow of supar workflow");
-                propertiesDAO.insert(insertProperties);
-            }
             restWrapper = new RestWrapper(process, RestWrapper.OK);
             LOGGER.info("Record with ID:" + process.getProcessId() + " inserted in Process by User:" + principal.getName() + process);
 

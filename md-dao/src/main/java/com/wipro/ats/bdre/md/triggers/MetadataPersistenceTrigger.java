@@ -32,6 +32,7 @@ public class MetadataPersistenceTrigger implements PreUpdateEventListener, PreIn
 
     private static final Logger LOGGER = Logger.getLogger(MetadataPersistenceTrigger.class);
     private static Map<Integer,Integer> processTypeMap=new HashMap<>();
+
     @Autowired ProcessTypeDAO processTypeDAO;
 
     private void populateProcessTypeMap(){
@@ -43,6 +44,7 @@ public class MetadataPersistenceTrigger implements PreUpdateEventListener, PreIn
                 LOGGER.info("map contains " + processType.getProcessTypeId() + ", " + processTypeMap.get(processType.getProcessTypeId()));
             }
         }
+
     }
     private void processTypeValidator(Object object) {
         populateProcessTypeMap();
